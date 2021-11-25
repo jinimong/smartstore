@@ -11,6 +11,7 @@ export type DataType = {
   ['상품번호']: string
   ['상품명']: string
   ['상품종류']: string
+  ['옵션정보']: string
   ['수량']: number
   ['옵션가격']: number
   ['상품가격']: number
@@ -38,7 +39,7 @@ export type DataType = {
   ['배송속성']: string
 }
 
-type MappedDataType = Record<string, DataType[]>
+export type MappedDataType = Record<string, DataType[]>
 
 type ActionType = {
   type: 'INITIALIZE'
