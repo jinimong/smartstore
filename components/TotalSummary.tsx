@@ -7,7 +7,6 @@ import {
   ListIcon,
   Badge,
   Heading,
-  Divider,
   Table,
   Tbody,
   Td,
@@ -23,10 +22,8 @@ import { CheckCircleIcon } from '@chakra-ui/icons'
 
 const TotalSummary: React.FC = () => {
   const { data } = useData()
-  const { totalParcel, shouldPayPostCount, productInfo } = useMemo(
-    () => getDataTotal(data),
-    [data],
-  )
+  const { totalParcel, shouldPayPostCount, firstOrderCount, productInfo } =
+    useMemo(() => getDataTotal(data), [data])
   const sum = Object.values(productInfo).reduce(
     (acc, { count, discount, price }) => ({
       count: acc.count + count,
@@ -49,6 +46,13 @@ const TotalSummary: React.FC = () => {
                 주문내역
               </Badge>{' '}
               {Object.keys(data).length}건
+            </ListItem>
+            <ListItem>
+              <ListIcon as={CheckCircleIcon} color="green.400" />
+              <Badge variant="outline" colorScheme="green">
+                신규 구매자
+              </Badge>{' '}
+              {firstOrderCount}명
             </ListItem>
             <ListItem>
               <ListIcon as={CheckCircleIcon} color="green.400" />

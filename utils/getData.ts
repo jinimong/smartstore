@@ -14,6 +14,7 @@ type CustomerType = {
   products: ProductType[]
   parcel: number
   shouldPayPost: boolean
+  isFirstOrder: boolean
   address: string
   phone: string
   payUser: string
@@ -24,6 +25,7 @@ type CustomerType = {
 type TotalType = {
   totalParcel: number
   shouldPayPostCount: number
+  firstOrderCount: number
   productInfo: Record<string, BaseProductType>
 }
 
@@ -36,6 +38,7 @@ export const getDataByCustomer: (data: MappedDataType) => CustomerType[] = (
     address: dataList[0]['배송지'],
     phone: dataList[0]['구매자연락처'],
     targetUser: dataList[0]['수취인명'],
+    isFirstOrder: dataList[0]['주문세부상태'] === '신규주문',
     parcel: dataList[0]['배송비 합계'],
     shouldPayPost:
       dataList[0]['배송비 합계'] === 0 &&
@@ -63,25 +66,30 @@ export const getDataTotal: (data: MappedDataType) => TotalType = (
   data: MappedDataType,
 ) => {
   const customers = getDataByCustomer(data)
-  const { totalParcel, shouldPayPostCount, products } = customers.reduce(
-    (acc, { parcel, shouldPayPost, products }) => ({
-      totalParcel: acc.totalParcel + parcel,
-      shouldPayPostCount: acc.shouldPayPostCount + (shouldPayPost ? 1 : 0),
-      products: [...acc.products, ...products],
-    }),
-    {
-      totalParcel: 0,
-      shouldPayPostCount: 0,
-      products: [],
-    } as {
-      totalParcel: number
-      shouldPayPostCount: number
-      products: ProductType[]
-    },
-  )
+  const { totalParcel, shouldPayPostCount, firstOrderCount, products } =
+    customers.reduce(
+      (acc, { parcel, shouldPayPost, isFirstOrder, products }) => ({
+        totalParcel: acc.totalParcel + parcel,
+        shouldPayPostCount: acc.shouldPayPostCount + (shouldPayPost ? 1 : 0),
+        firstOrderCount: acc.firstOrderCount + (isFirstOrder ? 1 : 0),
+        products: [...acc.products, ...products],
+      }),
+      {
+        totalParcel: 0,
+        shouldPayPostCount: 0,
+        firstOrderCount: 0,
+        products: [],
+      } as {
+        totalParcel: number
+        shouldPayPostCount: number
+        firstOrderCount: number
+        products: ProductType[]
+      },
+    )
   return {
     totalParcel,
     shouldPayPostCount,
+    firstOrderCount,
     productInfo: products.reduce(
       (acc, { name, count, price, discount }) => ({
         ...acc,
