@@ -6,11 +6,11 @@ type BaseProductType = {
   discount: number
 }
 
-type ProductType = {
+export type ProductType = {
   name: string
 } & BaseProductType
 
-type CustomerType = {
+export type CustomerType = {
   products: ProductType[]
   parcel: number
   shouldPayPost: boolean

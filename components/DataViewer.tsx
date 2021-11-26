@@ -7,11 +7,11 @@ import CustomerSummaryProvider from 'components/CustomerSummaryProvider'
 
 const DataViewer: React.FC = () => {
   return (
-    <Box position="relative">
-      <Box position="absolute" top={0} right={0}>
+    <Box w="5xl" p={4} mx="auto">
+      <Box position="absolute" top={4} right={4}>
         <DataResetButton />
       </Box>
-      <Tabs>
+      <Tabs isFitted variant="enclosed">
         <TabList>
           <Tab>전체 통계</Tab>
           <Tab>구매자별 요약</Tab>
