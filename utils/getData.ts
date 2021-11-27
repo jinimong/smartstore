@@ -26,7 +26,7 @@ type TotalType = {
   totalParcel: number
   shouldPayPostCount: number
   firstOrderCount: number
-  productInfo: Record<string, BaseProductType>
+  products: ProductType[]
 }
 
 export const getDataByCustomer: (data: MappedDataType) => CustomerType[] = (
@@ -62,44 +62,45 @@ export const getDataByCustomer: (data: MappedDataType) => CustomerType[] = (
   }))
 }
 
+type ProductInfo = Record<string, BaseProductType>
+
+export const getProductInfo: (products: ProductType[]) => ProductInfo = (
+  products,
+) => {
+  return products.reduce(
+    (acc, { name, count, price, discount }) => ({
+      ...acc,
+      [name]: {
+        count: (acc[name]?.count || 0) + count,
+        price: (acc[name]?.price || 0) + price,
+        discount: (acc[name]?.discount || 0) + discount,
+      },
+    }),
+    {} as ProductInfo,
+  )
+}
+
 export const getDataTotal: (data: MappedDataType) => TotalType = (
   data: MappedDataType,
 ) => {
   const customers = getDataByCustomer(data)
-  const { totalParcel, shouldPayPostCount, firstOrderCount, products } =
-    customers.reduce(
-      (acc, { parcel, shouldPayPost, isFirstOrder, products }) => ({
-        totalParcel: acc.totalParcel + parcel,
-        shouldPayPostCount: acc.shouldPayPostCount + (shouldPayPost ? 1 : 0),
-        firstOrderCount: acc.firstOrderCount + (isFirstOrder ? 1 : 0),
-        products: [...acc.products, ...products],
-      }),
-      {
-        totalParcel: 0,
-        shouldPayPostCount: 0,
-        firstOrderCount: 0,
-        products: [],
-      } as {
-        totalParcel: number
-        shouldPayPostCount: number
-        firstOrderCount: number
-        products: ProductType[]
-      },
-    )
-  return {
-    totalParcel,
-    shouldPayPostCount,
-    firstOrderCount,
-    productInfo: products.reduce(
-      (acc, { name, count, price, discount }) => ({
-        ...acc,
-        [name]: {
-          count: (acc[name]?.count || 0) + count,
-          price: (acc[name]?.price || 0) + price,
-          discount: (acc[name]?.discount || 0) + discount,
-        },
-      }),
-      {} as Record<string, BaseProductType>,
-    ),
-  }
+  return customers.reduce(
+    (acc, { parcel, shouldPayPost, isFirstOrder, products }) => ({
+      totalParcel: acc.totalParcel + parcel,
+      shouldPayPostCount: acc.shouldPayPostCount + (shouldPayPost ? 1 : 0),
+      firstOrderCount: acc.firstOrderCount + (isFirstOrder ? 1 : 0),
+      products: [...acc.products, ...products],
+    }),
+    {
+      totalParcel: 0,
+      shouldPayPostCount: 0,
+      firstOrderCount: 0,
+      products: [],
+    } as {
+      totalParcel: number
+      shouldPayPostCount: number
+      firstOrderCount: number
+      products: ProductType[]
+    },
+  )
 }

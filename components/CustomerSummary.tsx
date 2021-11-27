@@ -1,9 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { useData } from 'components/DataProvider'
 import { getDataByCustomer } from 'utils/getData'
-import { Button, ButtonGroup } from '@chakra-ui/button'
-import { Box, Text } from '@chakra-ui/layout'
 import Customer from './CustomerDetail'
+import { Box, Button, ButtonGroup, Center } from '@chakra-ui/react'
 
 const CustomerSummary: React.FC = () => {
   const { data } = useData()
@@ -21,14 +20,23 @@ const CustomerSummary: React.FC = () => {
 
   return (
     <div>
-      <div>
-        {step} / {size}
-      </div>
+      <Center>
+        <div>
+          <Box>
+            {step} / {size}
+          </Box>
+          <ButtonGroup>
+            <Button
+              onClick={goPrev}
+              onKeyDownCapture={(e) => console.log(1, e)}
+            >
+              Prev
+            </Button>
+            <Button onClick={goNext}>Next</Button>
+          </ButtonGroup>
+        </div>
+      </Center>
       <hr />
-      <ButtonGroup>
-        <Button onClick={goNext}>Next</Button>
-        <Button onClick={goPrev}>Prev</Button>
-      </ButtonGroup>
       <Customer customer={customers[step - 1]} />
     </div>
   )

@@ -7,30 +7,18 @@ import {
   ListIcon,
   Badge,
   Heading,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
   Center,
   Box,
   Spacer,
   VStack,
 } from '@chakra-ui/react'
 import { CheckCircleIcon } from '@chakra-ui/icons'
+import ProductTable from 'components/ProductTable'
 
 const TotalSummary: React.FC = () => {
   const { data } = useData()
-  const { totalParcel, shouldPayPostCount, firstOrderCount, productInfo } =
+  const { totalParcel, shouldPayPostCount, firstOrderCount, products } =
     useMemo(() => getDataTotal(data), [data])
-  const sum = Object.values(productInfo).reduce(
-    (acc, { count, discount, price }) => ({
-      count: acc.count + count,
-      discount: acc.discount + discount,
-      price: acc.price + price,
-    }),
-  )
 
   return (
     <Center>
@@ -76,34 +64,7 @@ const TotalSummary: React.FC = () => {
           <Heading as="h3" size="lg">
             상품별 통계
           </Heading>
-          <Table size="sm">
-            <Thead>
-              <Tr>
-                <Th>상품</Th>
-                <Th isNumeric>판매량</Th>
-                <Th isNumeric>매출액</Th>
-                <Th isNumeric>할인액</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr color="green.400" fontWeight="bold">
-                <Td>전체합계</Td>
-                <Td isNumeric>{sum.count}</Td>
-                <Td isNumeric>{sum.price}</Td>
-                <Td isNumeric>{sum.discount}</Td>
-              </Tr>
-              {Object.entries(productInfo).map(
-                ([name, { count, price, discount }]) => (
-                  <Tr key={name}>
-                    <Td>{name}</Td>
-                    <Td isNumeric>{count}</Td>
-                    <Td isNumeric>{price}</Td>
-                    <Td isNumeric>{discount}</Td>
-                  </Tr>
-                ),
-              )}
-            </Tbody>
-          </Table>
+          <ProductTable products={products} />
         </VStack>
       </Box>
     </Center>
