@@ -1,20 +1,22 @@
 import React from 'react'
-import { useData } from 'components/DataProvider'
+import { Step, useData } from 'components/DataProvider'
 import OrderExcelReader from 'components/OrderExcelReader'
 import OrderDataViewer from 'components/OrderDataViewer'
 import { Box } from '@chakra-ui/react'
+import ProductCsvReader from './ProductCsvReader'
+import StepNav from './StepNav'
 
 const Main: React.FC = () => {
   const {
-    data: { orderData },
+    data: { step, productData, orderData },
   } = useData()
+  console.log(step, productData)
   return (
     <Box>
-      {Object.keys(orderData).length > 0 ? (
-        <OrderDataViewer />
-      ) : (
-        <OrderExcelReader />
-      )}
+      <StepNav />
+      {step === Step.UPLOAD_PRODUCT_DATA && <ProductCsvReader />}
+      {step === Step.UPLOAD_ORDER_DATA && <OrderExcelReader />}
+      {step === Step.UPLOAD_FINISH && <OrderDataViewer />}
     </Box>
   )
 }
