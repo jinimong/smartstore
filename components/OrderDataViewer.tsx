@@ -1,15 +1,15 @@
 import React from 'react'
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Box } from '@chakra-ui/react'
-import DataResetButton from 'components/DataResetButton'
+import OrderDataResetButton from 'components/OrderDataResetButton'
 import TotalSummary from 'components/TotalSummary'
 import CustomerSummary from 'components/CustomerSummary'
 import CustomerSummaryProvider from 'components/CustomerSummaryProvider'
 
-const DataViewer: React.FC = () => {
+const OrderDataViewer: React.FC = () => {
   return (
     <Box w="5xl" p={4} mx="auto">
       <Box position="absolute" top={4} right={4}>
-        <DataResetButton />
+        <OrderDataResetButton />
       </Box>
       <Tabs isFitted variant="enclosed">
         <TabList>
@@ -31,4 +31,4 @@ const DataViewer: React.FC = () => {
   )
 }
 
-export default DataViewer
+export default OrderDataViewer

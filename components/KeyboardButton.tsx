@@ -4,16 +4,16 @@ import React, { useCallback, useEffect } from 'react'
 const KeyboardButton: React.FC<
   {
     callback: () => void
-    keyCode: number
+    code: string
   } & ButtonProps
-> = ({ children, callback, keyCode, ...buttonProps }) => {
+> = ({ children, callback, code, ...buttonProps }) => {
   const handleKeydown = useCallback(
     (e) => {
-      if (e.keyCode === keyCode) {
+      if (e.code === code) {
         callback()
       }
     },
-    [callback, keyCode],
+    [callback, code],
   )
   useEffect(() => {
     window.addEventListener('keydown', handleKeydown, true)

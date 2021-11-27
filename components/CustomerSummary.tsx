@@ -3,13 +3,15 @@ import { Box, ButtonGroup, Center } from '@chakra-ui/react'
 import Customer from 'components/CustomerDetail'
 import { useData } from 'components/DataProvider'
 import KeyboardButton from 'components/KeyboardButton'
-import { getDataByCustomer } from 'utils/getData'
+import { getCustomers } from 'utils/orders'
 
 const CustomerSummary: React.FC = () => {
-  const { data } = useData()
+  const {
+    data: { orderData },
+  } = useData()
   const customers = useMemo(
-    () => getDataByCustomer(data).sort((a, b) => (a.key < b.key ? -1 : 1)),
-    [data],
+    () => getCustomers(orderData).sort((a, b) => (a.key < b.key ? -1 : 1)),
+    [orderData],
   )
   const size = customers.length
   const [step, setStep] = useState(1)
@@ -27,10 +29,10 @@ const CustomerSummary: React.FC = () => {
             {step} / {size}
           </Box>
           <ButtonGroup>
-            <KeyboardButton callback={goPrev} keyCode={38}>
+            <KeyboardButton callback={goPrev} code="ArrowLeft">
               Prev
             </KeyboardButton>
-            <KeyboardButton callback={goNext} keyCode={40}>
+            <KeyboardButton callback={goNext} code="ArrowRight">
               Next
             </KeyboardButton>
           </ButtonGroup>

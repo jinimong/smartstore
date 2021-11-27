@@ -1,6 +1,6 @@
-import { Badge, Box, Flex, List, ListIcon, ListItem } from '@chakra-ui/layout'
+import { Badge, Box, List, ListIcon, ListItem } from '@chakra-ui/layout'
 import React from 'react'
-import { CustomerType } from 'utils/getData'
+import { CustomerType } from 'utils/orders'
 import ProductTable from 'components/ProductTable'
 import { AtSignIcon, PhoneIcon, StarIcon } from '@chakra-ui/icons'
 import { Tooltip } from '@chakra-ui/react'
@@ -16,7 +16,7 @@ const Customer: React.FC<Props> = ({
     parcel,
     isFirstOrder,
     shouldPayPost,
-    products,
+    orderProducts,
   },
 }) => {
   return (
@@ -67,7 +67,7 @@ const Customer: React.FC<Props> = ({
         )}
       </Box>
       <Box mt={4}>
-        <ProductTable products={products} />
+        <ProductTable orderProducts={orderProducts} />
       </Box>
     </Box>
   )

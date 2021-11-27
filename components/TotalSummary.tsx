@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { useData } from 'components/DataProvider'
-import { getDataTotal } from 'utils/getData'
+import { getDataTotal } from 'utils/orders'
 import {
   List,
   ListItem,
@@ -16,9 +16,11 @@ import { CheckCircleIcon } from '@chakra-ui/icons'
 import ProductTable from 'components/ProductTable'
 
 const TotalSummary: React.FC = () => {
-  const { data } = useData()
-  const { totalParcel, shouldPayPostCount, firstOrderCount, products } =
-    useMemo(() => getDataTotal(data), [data])
+  const {
+    data: { orderData },
+  } = useData()
+  const { totalParcel, shouldPayPostCount, firstOrderCount, orderProducts } =
+    useMemo(() => getDataTotal(orderData), [orderData])
 
   return (
     <Center>
@@ -33,7 +35,7 @@ const TotalSummary: React.FC = () => {
               <Badge variant="outline" colorScheme="green">
                 주문내역
               </Badge>{' '}
-              {Object.keys(data).length}건
+              {Object.keys(orderData).length}건
             </ListItem>
             <ListItem>
               <ListIcon as={CheckCircleIcon} color="green.400" />
@@ -64,7 +66,7 @@ const TotalSummary: React.FC = () => {
           <Heading as="h3" size="lg">
             상품별 통계
           </Heading>
-          <ProductTable products={products} />
+          <ProductTable orderProducts={orderProducts} />
         </VStack>
       </Box>
     </Center>

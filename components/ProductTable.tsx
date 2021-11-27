@@ -1,14 +1,14 @@
 import { Table, Thead, Tr, Th, Tbody, Td } from '@chakra-ui/react'
 import React from 'react'
-import { getProductInfo, ProductType } from 'utils/getData'
+import { getOrderProductInfo, OrderProductType } from 'utils/orders'
 
 type Props = {
-  products: ProductType[]
+  orderProducts: OrderProductType[]
 }
 
-const ProductTable: React.FC<Props> = ({ products }) => {
-  const productInfo = getProductInfo(products)
-  const sum = Object.values(productInfo).reduce(
+const ProductTable: React.FC<Props> = ({ orderProducts }) => {
+  const orderProductInfo = getOrderProductInfo(orderProducts)
+  const sum = Object.values(orderProductInfo).reduce(
     (acc, { count, discount, price }) => ({
       count: acc.count + count,
       discount: acc.discount + discount,
@@ -32,7 +32,7 @@ const ProductTable: React.FC<Props> = ({ products }) => {
           <Td isNumeric>{sum.price}</Td>
           <Td isNumeric>{sum.discount}</Td>
         </Tr>
-        {Object.entries(productInfo).map(
+        {Object.entries(orderProductInfo).map(
           ([name, { count, price, discount }]) => (
             <Tr key={name}>
               <Td>{name}</Td>
