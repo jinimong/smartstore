@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react'
+import { Box, ButtonGroup, Center } from '@chakra-ui/react'
+import Customer from 'components/CustomerDetail'
 import { useData } from 'components/DataProvider'
+import KeyboardButton from 'components/KeyboardButton'
 import { getDataByCustomer } from 'utils/getData'
-import Customer from './CustomerDetail'
-import { Box, Button, ButtonGroup, Center } from '@chakra-ui/react'
 
 const CustomerSummary: React.FC = () => {
   const { data } = useData()
@@ -22,17 +23,16 @@ const CustomerSummary: React.FC = () => {
     <div>
       <Center>
         <div>
-          <Box>
+          <Box textAlign="center">
             {step} / {size}
           </Box>
           <ButtonGroup>
-            <Button
-              onClick={goPrev}
-              onKeyDownCapture={(e) => console.log(1, e)}
-            >
+            <KeyboardButton callback={goPrev} keyCode={38}>
               Prev
-            </Button>
-            <Button onClick={goNext}>Next</Button>
+            </KeyboardButton>
+            <KeyboardButton callback={goNext} keyCode={40}>
+              Next
+            </KeyboardButton>
           </ButtonGroup>
         </div>
       </Center>
