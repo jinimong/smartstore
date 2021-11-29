@@ -51,7 +51,7 @@ const OrderExcelReader: React.FC = () => {
 
   return (
     <Box>
-      <Center h="100vh">
+      <Center>
         <Dropzone
           options={{
             maxFiles: 1,

@@ -50,7 +50,7 @@ const ProductCsvReader: React.FC = () => {
   )
 
   return (
-    <Center h="100vh">
+    <Center>
       <Dropzone
         options={{
           maxFiles: 1,

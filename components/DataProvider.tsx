@@ -4,6 +4,10 @@ import { MappedProductType, ProductType } from 'utils/products'
 
 type ActionType =
   | {
+      type: 'CHANGE_STEP'
+      step: Step
+    }
+  | {
       type: 'INIT_PRODUCT'
       products: ProductType[]
     }
@@ -18,11 +22,10 @@ export enum Step {
   UPLOAD_FINISH,
 }
 
-export const stepMap = {
-  [Step.UPLOAD_PRODUCT_DATA]: '상품목록 CSV 파일 읽기',
-  [Step.UPLOAD_ORDER_DATA]: '주문내역 엑셀파일 읽기',
-  [Step.UPLOAD_FINISH]: '업로드가 끝났습니다',
-}
+export const stepMap = new Map([
+  [Step.UPLOAD_PRODUCT_DATA, '상품목록 CSV 파일 읽기'],
+  [Step.UPLOAD_ORDER_DATA, '주문내역 엑셀파일 읽기'],
+])
 
 type DataType = {
   step: Step
@@ -32,23 +35,29 @@ type DataType = {
 
 const reducer = (data: DataType, action: ActionType) => {
   switch (action.type) {
+    case 'CHANGE_STEP': {
+      return {
+        ...data,
+        step: action.step,
+      }
+    }
     case 'INIT_PRODUCT': {
       return {
         ...data,
-        step: data.step + 1,
+        step: Step.UPLOAD_ORDER_DATA,
         productData: action.products.reduce((acc, product) => {
           const key = product['상품번호(스마트스토어)']
           return {
             ...acc,
             [key]: product,
           }
-        }, {} as MappedOrderType),
+        }, {} as MappedProductType),
       }
     }
     case 'INIT_ORDER': {
       return {
         ...data,
-        step: data.step + 1,
+        step: Step.UPLOAD_FINISH,
         orderData: action.orders.reduce((acc, order) => {
           const key = order['주문번호']
           const value = acc[key] || []

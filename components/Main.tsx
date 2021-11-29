@@ -10,7 +10,6 @@ const Main: React.FC = () => {
   const {
     data: { step, productData, orderData },
   } = useData()
-  console.log(step, productData)
   return (
     <Box>
       <StepNav />
