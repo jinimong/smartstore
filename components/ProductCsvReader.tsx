@@ -1,6 +1,19 @@
 import React, { useCallback } from 'react'
 import XLSX from 'xlsx'
-import { Center, useBoolean, useToast } from '@chakra-ui/react'
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Center,
+  Link,
+  Text,
+  useBoolean,
+  useToast,
+} from '@chakra-ui/react'
+import { LinkIcon, QuestionIcon } from '@chakra-ui/icons'
 import { useData } from 'components/DataProvider'
 import Dropzone from 'components/Dropzone'
 import { ProductType } from 'utils/products'
@@ -51,15 +64,53 @@ const ProductCsvReader: React.FC = () => {
 
   return (
     <Center>
-      <Dropzone
-        options={{
-          maxFiles: 1,
-          multiple: false,
-          accept: '.csv',
-          onDrop,
-        }}
-        loading={loading}
-      />
+      <Box w="40%">
+        <Box w="full" my={8} p={4} rounded="lg" position="relative">
+          <QuestionIcon
+            color="green.300"
+            bg="white"
+            fontSize="xl"
+            mb={4}
+            position="absolute"
+            top={0}
+            left={0}
+          />
+          <Accordion allowMultiple>
+            <AccordionItem>
+              <AccordionButton
+                _expanded={{ color: 'green.300', fontWeight: 'bold' }}
+              >
+                <Box flex="1" textAlign="left">
+                  상품목록 CSV 파일은 어디서 다운받나요?
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel pb={4}>
+                <Link
+                  isExternal
+                  href="https://help.sell.smartstore.naver.com/faq/search.help?categoryId=0&searchKeyword=%EC%83%81%ED%92%88%EC%9D%98+%EC%A0%95%EB%B3%B4%EB%A5%BC+%EC%97%91%EC%85%80"
+                >
+                  <Box d="flex" alignItems="center">
+                    <LinkIcon />
+                    <Text pt={1} ml={1}>
+                      스마트스토어 FAQ 바로가기
+                    </Text>
+                  </Box>
+                </Link>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+        </Box>
+        <Dropzone
+          options={{
+            maxFiles: 1,
+            multiple: false,
+            accept: 'text/csv',
+            onDrop,
+          }}
+          loading={loading}
+        />
+      </Box>
     </Center>
   )
 }

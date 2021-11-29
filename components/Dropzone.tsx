@@ -43,7 +43,7 @@ const Dropzone: React.FC<{
       <Box
         m={4}
         p={16}
-        width="50vw"
+        width="full"
         height="30vh"
         cursor="pointer"
         borderWidth={4}
@@ -51,6 +51,9 @@ const Dropzone: React.FC<{
         borderColor={borderColor}
         borderRadius={8}
         transition="border .24s ease-in-out"
+        sx={{
+          '&:hover': { backgroundColor: 'green.100' },
+        }}
         {...getRootProps({ className: 'dropzone' })}
       >
         <Center height="100%" fontSize="1.5rem">

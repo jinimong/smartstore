@@ -1,9 +1,22 @@
 import React, { useCallback } from 'react'
 import XLSX from 'xlsx'
-import { Box, Center, useBoolean, useToast } from '@chakra-ui/react'
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Center,
+  Link,
+  Text,
+  useBoolean,
+  useToast,
+} from '@chakra-ui/react'
 import { useData } from 'components/DataProvider'
 import Dropzone from 'components/Dropzone'
 import { OrderType } from 'utils/orders'
+import { QuestionIcon, LinkIcon } from '@chakra-ui/icons'
 
 function isOrderTypeArray(obj: any): obj is OrderType[] {
   return obj.length === 0 || obj[0]['상품주문번호'] !== undefined
@@ -50,8 +63,44 @@ const OrderExcelReader: React.FC = () => {
   )
 
   return (
-    <Box>
-      <Center>
+    <Center>
+      <Box w="40%">
+        <Box w="full" my={8} p={4} rounded="lg" position="relative">
+          <QuestionIcon
+            color="green.300"
+            bg="white"
+            fontSize="xl"
+            mb={4}
+            position="absolute"
+            top={0}
+            left={0}
+          />
+          <Accordion allowMultiple>
+            <AccordionItem>
+              <AccordionButton
+                _expanded={{ color: 'green.300', fontWeight: 'bold' }}
+              >
+                <Box flex="1" textAlign="left">
+                  주문내역 XLSX 파일은 어디서 다운받나요?
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel pb={4}>
+                <Link
+                  isExternal
+                  href="https://help.sell.smartstore.naver.com/faq/search.help?categoryId=0&searchKeyword=%EC%A3%BC%EB%AC%B8%EB%82%B4%EC%97%AD+%EC%97%91%EC%85%80"
+                >
+                  <Box d="flex" alignItems="center">
+                    <LinkIcon />
+                    <Text pt={1} ml={1}>
+                      스마트스토어 FAQ 바로가기
+                    </Text>
+                  </Box>
+                </Link>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+        </Box>
         <Dropzone
           options={{
             maxFiles: 1,
@@ -62,8 +111,8 @@ const OrderExcelReader: React.FC = () => {
           }}
           loading={loading}
         />
-      </Center>
-    </Box>
+      </Box>
+    </Center>
   )
 }
 
