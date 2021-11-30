@@ -1,20 +1,6 @@
-import React, { createContext, useContext, useReducer } from 'react'
+import React, { createContext, useContext, useEffect, useReducer } from 'react'
 import { MappedOrderType, OrderType } from 'utils/orders'
 import { MappedProductType, ProductType } from 'utils/products'
-
-type ActionType =
-  | {
-      type: 'CHANGE_STEP'
-      step: Step
-    }
-  | {
-      type: 'INIT_PRODUCT'
-      products: ProductType[]
-    }
-  | {
-      type: 'INIT_ORDER'
-      orders: OrderType[]
-    }
 
 export enum Step {
   UPLOAD_PRODUCT_DATA,
@@ -33,6 +19,26 @@ type DataType = {
   orderData: MappedOrderType
 }
 
+type ActionType =
+  | {
+      type: 'CHANGE_STEP'
+      step: Step
+    }
+  | {
+      type: 'INIT_DATA'
+      savedData: DataType
+    }
+  | {
+      type: 'INIT_PRODUCT'
+      products: ProductType[]
+    }
+  | {
+      type: 'INIT_ORDER'
+      orders: OrderType[]
+    }
+
+const STORAGE_KEY = 'smartstore-data'
+
 const reducer = (data: DataType, action: ActionType) => {
   switch (action.type) {
     case 'CHANGE_STEP': {
@@ -41,8 +47,13 @@ const reducer = (data: DataType, action: ActionType) => {
         step: action.step,
       }
     }
-    case 'INIT_PRODUCT': {
+    case 'INIT_DATA': {
       return {
+        ...action.savedData,
+      }
+    }
+    case 'INIT_PRODUCT': {
+      const result = {
         ...data,
         step: Step.UPLOAD_ORDER_DATA,
         productData: action.products.reduce((acc, product) => {
@@ -53,9 +64,11 @@ const reducer = (data: DataType, action: ActionType) => {
           }
         }, {} as MappedProductType),
       }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(result))
+      return result
     }
     case 'INIT_ORDER': {
-      return {
+      const result = {
         ...data,
         step: Step.UPLOAD_FINISH,
         orderData: action.orders.reduce((acc, order) => {
@@ -67,6 +80,8 @@ const reducer = (data: DataType, action: ActionType) => {
           }
         }, {} as MappedOrderType),
       }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(result))
+      return result
     }
     default:
       return data
@@ -93,6 +108,15 @@ const Context = createContext<DataProviderProps>(defaultValue)
 
 const DataProvider: React.FC = ({ children }) => {
   const [data, dispatch] = useReducer(reducer, defaultData)
+
+  useEffect(() => {
+    const item = localStorage.getItem(STORAGE_KEY)
+    if (item) {
+      const savedData = JSON.parse(item) as DataType
+      dispatch({ type: 'INIT_DATA', savedData })
+    }
+  }, [dispatch])
+
   return (
     <Context.Provider value={{ data, dispatch }}>{children}</Context.Provider>
   )
