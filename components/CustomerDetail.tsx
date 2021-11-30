@@ -4,8 +4,9 @@ import { CustomerType } from 'utils/orders'
 import ProductTable from 'components/ProductTable'
 import { AtSignIcon, PhoneIcon, StarIcon } from '@chakra-ui/icons'
 import { Tooltip } from '@chakra-ui/react'
+import { useCustomerSummary } from './CustomerSummaryProvider'
 
-type Props = { customer: CustomerType }
+type Props = { customer: CustomerType; order: number }
 
 const Customer: React.FC<Props> = ({
   customer: {
@@ -18,7 +19,12 @@ const Customer: React.FC<Props> = ({
     shouldPayPost,
     orderProducts,
   },
+  order,
 }) => {
+  const {
+    state: { fcfsBasisCount },
+  } = useCustomerSummary()
+  const isFcfsBasis = order <= fcfsBasisCount
   return (
     <Box mt={4} p={8} borderRadius="xl" boxShadow="xl" fontSize="lg">
       <List mx={4} spacing={3}>
@@ -63,6 +69,11 @@ const Customer: React.FC<Props> = ({
         {isFirstOrder && (
           <Badge variant="outline" colorScheme="green">
             첫주문
+          </Badge>
+        )}
+        {isFcfsBasis && (
+          <Badge variant="outline" colorScheme="green">
+            선착순#{order}
           </Badge>
         )}
       </Box>
