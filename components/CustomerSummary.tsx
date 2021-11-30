@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { Box, ButtonGroup, Center } from '@chakra-ui/react'
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import Customer from 'components/CustomerDetail'
 import { useData } from 'components/DataProvider'
 import KeyboardButton from 'components/KeyboardButton'
@@ -29,12 +30,16 @@ const CustomerSummary: React.FC = () => {
             {step} / {size}
           </Box>
           <ButtonGroup>
-            <KeyboardButton callback={goPrev} code="ArrowLeft">
-              Prev
-            </KeyboardButton>
-            <KeyboardButton callback={goNext} code="ArrowRight">
-              Next
-            </KeyboardButton>
+            <KeyboardButton
+              callback={goPrev}
+              code="ArrowLeft"
+              Icon={ChevronLeftIcon}
+            />
+            <KeyboardButton
+              callback={goNext}
+              code="ArrowRight"
+              Icon={ChevronRightIcon}
+            />
           </ButtonGroup>
         </div>
       </Center>
