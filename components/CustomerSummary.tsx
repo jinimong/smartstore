@@ -1,29 +1,16 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import {
-  Box,
-  ButtonGroup,
-  Center,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-} from '@chakra-ui/react'
+import { Box, ButtonGroup, Center } from '@chakra-ui/react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import Customer from 'components/CustomerDetail'
 import { useData } from 'components/DataProvider'
 import KeyboardButton from 'components/KeyboardButton'
+import FcfsBasis from 'components/FcfsBasis'
 import { getCustomers } from 'utils/orders'
-import { useCustomerSummary } from './CustomerSummaryProvider'
 
 const CustomerSummary: React.FC = () => {
   const {
     data: { orderData },
   } = useData()
-  const {
-    state: { fcfsBasisCount },
-    dispatch,
-  } = useCustomerSummary()
 
   const customers = useMemo(
     () => getCustomers(orderData).sort((a, b) => (a.key < b.key ? -1 : 1)),
@@ -40,37 +27,26 @@ const CustomerSummary: React.FC = () => {
   return (
     <div>
       <Center>
-        <div>
-          <NumberInput
-            w={24}
-            min={1}
-            max={size}
-            onChange={(value) => {
-              dispatch({ type: 'SET_FCFSB_COUNT', value: +value })
-            }}
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-          <Box textAlign="center">
-            {step} / {size}
-          </Box>
-          <ButtonGroup>
-            <KeyboardButton
-              callback={goPrev}
-              code="ArrowLeft"
-              Icon={ChevronLeftIcon}
-            />
-            <KeyboardButton
-              callback={goNext}
-              code="ArrowRight"
-              Icon={ChevronRightIcon}
-            />
-          </ButtonGroup>
-        </div>
+        <Box>
+          <FcfsBasis customers={customers} />
+          <div>
+            <Box textAlign="center">
+              {step} / {size}
+            </Box>
+            <ButtonGroup>
+              <KeyboardButton
+                callback={goPrev}
+                code="ArrowLeft"
+                Icon={ChevronLeftIcon}
+              />
+              <KeyboardButton
+                callback={goNext}
+                code="ArrowRight"
+                Icon={ChevronRightIcon}
+              />
+            </ButtonGroup>
+          </div>
+        </Box>
       </Center>
       <hr />
       <Customer customer={customers[step - 1]} order={step} />

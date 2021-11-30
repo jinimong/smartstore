@@ -143,3 +143,23 @@ export const getDataTotal: (orderData: MappedOrderType) => TotalType = (
     },
   )
 }
+
+export const getFcfsbList: (
+  customers: CustomerType[],
+  fcfsBasisCount: number,
+) => string[] = (customers, fcfsBasisCount) => {
+  return customers
+    .slice(0, fcfsBasisCount)
+    .map(({ payUser, phone }) => ({
+      name: payUser
+        .split('')
+        .map((c, i) => (i === 1 ? '*' : c))
+        .join(''),
+      phone: phone
+        .split('-')[2]
+        .split('')
+        .map((c, i) => (i === 3 ? '*' : c))
+        .join(''),
+    }))
+    .map(({ name, phone }) => `- ${name} ${phone}`)
+}
