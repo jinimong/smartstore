@@ -8,7 +8,7 @@ import StepNav from './StepNav'
 
 const Main: React.FC = () => {
   const {
-    data: { step, productData, orderData },
+    data: { step },
   } = useData()
   return (
     <Box>

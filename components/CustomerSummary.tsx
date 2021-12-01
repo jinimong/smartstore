@@ -1,21 +1,16 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Box, ButtonGroup, Center } from '@chakra-ui/react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import Customer from 'components/CustomerDetail'
 import { useData } from 'components/DataProvider'
 import KeyboardButton from 'components/KeyboardButton'
-import FcfsBasis from 'components/FcfsBasis'
-import { getCustomers } from 'utils/orders'
+import CustomerMenu from 'components/CustomerMenu'
 
 const CustomerSummary: React.FC = () => {
   const {
-    data: { orderData },
+    data: { customers },
   } = useData()
 
-  const customers = useMemo(
-    () => getCustomers(orderData).sort((a, b) => (a.key < b.key ? -1 : 1)),
-    [orderData],
-  )
   const size = customers.length
   const [step, setStep] = useState(1)
   const goNext = useCallback(
@@ -26,9 +21,9 @@ const CustomerSummary: React.FC = () => {
 
   return (
     <div>
+      <CustomerMenu />
       <Center>
         <Box>
-          <FcfsBasis customers={customers} />
           <div>
             <Box textAlign="center">
               {step} / {size}

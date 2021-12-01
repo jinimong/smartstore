@@ -1,5 +1,10 @@
 import React, { createContext, useContext, useEffect, useReducer } from 'react'
-import { MappedOrderType, OrderType } from 'utils/orders'
+import {
+  CustomerType,
+  getCustomers,
+  MappedOrderType,
+  OrderType,
+} from 'utils/orders'
 import { MappedProductType, ProductType } from 'utils/products'
 
 export enum Step {
@@ -16,7 +21,7 @@ export const stepMap = new Map([
 type DataType = {
   step: Step
   productData: MappedProductType
-  orderData: MappedOrderType
+  customers: CustomerType[]
 }
 
 type ActionType =
@@ -68,17 +73,20 @@ const reducer = (data: DataType, action: ActionType) => {
       return result
     }
     case 'INIT_ORDER': {
+      const orderData = action.orders.reduce((acc, order) => {
+        const key = order['주문번호']
+        const value = acc[key] || []
+        return {
+          ...acc,
+          [key]: [...value, order],
+        }
+      }, {} as MappedOrderType)
       const result = {
         ...data,
         step: Step.UPLOAD_FINISH,
-        orderData: action.orders.reduce((acc, order) => {
-          const key = order['주문번호']
-          const value = acc[key] || []
-          return {
-            ...acc,
-            [key]: [...value, order],
-          }
-        }, {} as MappedOrderType),
+        customers: getCustomers(orderData).sort((a, b) =>
+          a.key < b.key ? -1 : 1,
+        ),
       }
       localStorage.setItem(STORAGE_KEY, JSON.stringify(result))
       return result
@@ -95,7 +103,7 @@ type DataProviderProps = {
 
 const defaultData = {
   step: Step.UPLOAD_PRODUCT_DATA,
-  orderData: {},
+  customers: [],
   productData: {},
 }
 

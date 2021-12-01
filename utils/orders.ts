@@ -69,7 +69,7 @@ type TotalType = {
 }
 
 export const getCustomers: (orderData: MappedOrderType) => CustomerType[] = (
-  orderData: MappedOrderType,
+  orderData,
 ) => {
   return Object.values(orderData).map((orders) => ({
     key: orders[0]['주문번호'],
@@ -119,10 +119,9 @@ export const getOrderProductInfo: (
   )
 }
 
-export const getDataTotal: (orderData: MappedOrderType) => TotalType = (
-  orderData: MappedOrderType,
+export const getDataTotal: (customers: CustomerType[]) => TotalType = (
+  customers,
 ) => {
-  const customers = getCustomers(orderData)
   return customers.reduce(
     (acc, { parcel, shouldPayPost, isFirstOrder, orderProducts }) => ({
       totalParcel: acc.totalParcel + parcel,
@@ -161,5 +160,5 @@ export const getFcfsbList: (
         .map((c, i) => (i === 3 ? '*' : c))
         .join(''),
     }))
-    .map(({ name, phone }) => `- ${name} ${phone}`)
+    .map(({ name, phone }) => `${name} (${phone})`)
 }

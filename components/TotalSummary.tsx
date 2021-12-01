@@ -17,10 +17,10 @@ import ProductTable from 'components/ProductTable'
 
 const TotalSummary: React.FC = () => {
   const {
-    data: { orderData },
+    data: { customers },
   } = useData()
   const { totalParcel, shouldPayPostCount, firstOrderCount, orderProducts } =
-    useMemo(() => getDataTotal(orderData), [orderData])
+    useMemo(() => getDataTotal(customers), [customers])
 
   return (
     <Center>
@@ -35,7 +35,7 @@ const TotalSummary: React.FC = () => {
               <Badge variant="outline" colorScheme="green">
                 주문내역
               </Badge>{' '}
-              {Object.keys(orderData).length}건
+              {customers.length}건
             </ListItem>
             <ListItem>
               <ListIcon as={CheckCircleIcon} color="green.400" />
