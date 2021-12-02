@@ -18,6 +18,11 @@ const ProductTable: React.FC<Props> = ({ orderProducts }) => {
       discount: acc.discount + discount,
       price: acc.price + price,
     }),
+    {
+      count: 0,
+      discount: 0,
+      price: 0,
+    },
   )
   return (
     <Table size="sm">
