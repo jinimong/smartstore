@@ -13,7 +13,8 @@ const Customer: React.FC<Props> = ({
     payUser,
     targetUser,
     phone,
-    address,
+    address1,
+    address2,
     parcel,
     isFirstOrder,
     shouldPayPost,
@@ -35,7 +36,7 @@ const Customer: React.FC<Props> = ({
         </ListItem>
         <ListItem>
           <ListIcon as={AtSignIcon} color="green.400" />
-          {address}
+          {`${address1} ${address2}`}
         </ListItem>
         <ListItem>
           <ListIcon as={PhoneIcon} color="green.400" />
