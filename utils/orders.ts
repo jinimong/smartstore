@@ -24,7 +24,6 @@ export type OrderType = {
   ['배송비 할인액']: number
   ['수취인연락처1']: string
   ['수취인연락처2']: string
-  ['배송지']: string
   ['구매자연락처']: string
   ['우편번호']: string
   ['배송메세지']: string
@@ -42,6 +41,7 @@ export type OrderType = {
 export type MappedOrderType = Record<string, OrderType[]>
 
 type BaseOrderProductType = {
+  productCode: number
   count: number
   price: number
   discount: number
@@ -95,6 +95,7 @@ export const getCustomers: (orderData: MappedOrderType) => CustomerType[] = (
             (cur['상품종류'] === '조합형옵션상품'
               ? ` #${cur['옵션정보']}`
               : ''),
+          productCode: Number(cur['상품번호']),
           count: cur['수량'],
           price: cur['상품별 총 주문금액'],
           discount: cur['판매자 부담 할인액'],
@@ -108,12 +109,13 @@ export const getCustomers: (orderData: MappedOrderType) => CustomerType[] = (
 type MappedOrderProductType = Record<string, BaseOrderProductType>
 
 export const getOrderProductInfo: (
-  products: OrderProductType[],
-) => MappedOrderProductType = (products) => {
-  return products.reduce(
-    (acc, { name, count, price, discount }) => ({
+  orderProducts: OrderProductType[],
+) => MappedOrderProductType = (orderProducts) => {
+  return orderProducts.reduce(
+    (acc, { name, productCode, count, price, discount }) => ({
       ...acc,
       [name]: {
+        productCode,
         count: (acc[name]?.count || 0) + count,
         price: (acc[name]?.price || 0) + price,
         discount: (acc[name]?.discount || 0) + discount,

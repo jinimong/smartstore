@@ -16,7 +16,6 @@ import FcfsBasis from 'components/FcfsBasis'
 
 const CustomerMenu: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const btnRef = React.useRef()
 
   return (
     <>
@@ -25,13 +24,7 @@ const CustomerMenu: React.FC = () => {
         icon={<SettingsIcon />}
         onClick={onOpen}
       />
-      <Drawer
-        isOpen={isOpen}
-        placement="right"
-        onClose={onClose}
-        finalFocusRef={btnRef}
-        size="sm"
-      >
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="sm">
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
