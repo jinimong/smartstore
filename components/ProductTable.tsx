@@ -47,16 +47,22 @@ const ProductTable: React.FC<Props> = ({ orderProducts }) => {
           ([name, { productCode, count, price, discount }]) => (
             <Tr key={name}>
               <Td>
-                {productData[productCode] ? (
-                  <Img
-                    src={productData[productCode]['대표이미지 URL']}
-                    boxSize="50px"
-                    objectFit="cover"
-                    alt={name}
-                  />
-                ) : (
-                  <Box w={50} h={50} bg="green.100" />
-                )}
+                <Box w={50} h={50} bg="green.100">
+                  {productData[productCode] && (
+                    <Img
+                      src={productData[productCode]['대표이미지 URL']}
+                      boxSize="50px"
+                      objectFit="cover"
+                      alt={name}
+                      sx={{
+                        '&:hover': {
+                          transform: 'scale(4)',
+                          transition: 'all .1s ease-in-out',
+                        },
+                      }}
+                    />
+                  )}
+                </Box>
               </Td>
               <Td>{name}</Td>
               <Td
