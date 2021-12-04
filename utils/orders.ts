@@ -58,9 +58,11 @@ export type CustomerType = {
   isFirstOrder: boolean
   address1: string
   address2: string
+  zipCode: string
   phone: string
   payUser: string
   targetUser: string
+  targetPhone: string
   key: string
 }
 
@@ -79,8 +81,10 @@ export const getCustomers: (orderData: MappedOrderType) => CustomerType[] = (
     payUser: orders[0]['구매자명'],
     address1: orders[0]['(기본주소)'],
     address2: orders[0]['(상세주소)'],
+    zipCode: orders[0]['우편번호'],
     phone: orders[0]['구매자연락처'],
     targetUser: orders[0]['수취인명'],
+    targetPhone: orders[0]['수취인연락처1'],
     isFirstOrder: orders[0]['주문세부상태'] === '신규주문',
     parcel: orders[0]['배송비 합계'],
     shouldPayPost:
