@@ -6,6 +6,7 @@ import {
   OrderType,
 } from 'utils/orders'
 import { MappedProductType, ProductType } from 'utils/products'
+import { getSafeImageUrl } from 'utils/urls'
 
 export enum Step {
   UPLOAD_PRODUCT_DATA,
@@ -63,9 +64,10 @@ const reducer = (data: DataType, action: ActionType) => {
         step: Step.UPLOAD_ORDER_DATA,
         productData: action.products.reduce((acc, product) => {
           const key = product['상품번호(스마트스토어)']
+          const safeImageUrl = getSafeImageUrl(product['대표이미지 URL'])
           return {
             ...acc,
-            [key]: product,
+            [key]: { ...product, ['대표이미지 URL']: safeImageUrl },
           }
         }, {} as MappedProductType),
       }
