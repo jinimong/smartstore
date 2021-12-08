@@ -19,6 +19,7 @@ import {
 import { DownloadIcon } from '@chakra-ui/icons'
 import { useData } from './DataProvider'
 import { getPostData, headers, downloadPostExcelFile } from 'utils/posts'
+import PostReceipt from './PostReceipt'
 
 const PostManager: React.FC = () => {
   const [value, setValue] = useState<number>(0)
@@ -62,6 +63,7 @@ const PostManager: React.FC = () => {
           />
         </Tooltip>
       </Box>
+      <PostReceipt />
       <Table size="sm" mt={8}>
         <Thead>
           <Tr>
