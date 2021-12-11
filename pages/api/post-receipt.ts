@@ -6,6 +6,12 @@ type Data = {
   name: string
 }
 
+export type PostReceiptRowType = {
+  postKey: string
+  zipCode: string
+  name: string
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>,
@@ -26,7 +32,7 @@ export default async function handler(
         postKey: children[0].data,
         zipCode,
         name: description.split('\n')[0],
-      }
+      } as PostReceiptRowType
     }),
   })
 }
