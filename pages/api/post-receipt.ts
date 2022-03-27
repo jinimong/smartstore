@@ -2,14 +2,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import cheerio from 'cheerio'
 
-type Data = {
-  name: string
-}
-
 export type PostReceiptRowType = {
   postKey: string
   zipCode: string
   name: string
+}
+
+type Data = {
+  contents: PostReceiptRowType[]
 }
 
 export default async function handler(
@@ -23,8 +23,9 @@ export default async function handler(
   const contents = $('.message_ipt > div > a')
 
   res.status(200).json({
-    contents: Array.from(contents).map(({ next, children }) => {
-      const [, zipCode, description] = next.data
+    contents: Array.from(contents).map((element) => {
+      const { next, children } = element as cheerio.TagElement
+      const [, zipCode, description] = (next!.data || '')
         .trim()
         .replace(/\s\s+/g, ' ')
         .split(' ')
