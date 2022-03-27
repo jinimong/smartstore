@@ -1,4 +1,3 @@
-import { PostReceiptRowType } from 'pages/api/post-receipt'
 import React, { createContext, useContext, useEffect, useReducer } from 'react'
 import {
   CustomerType,
@@ -24,7 +23,6 @@ type DataType = {
   step: Step
   productData: MappedProductType
   customers: CustomerType[]
-  postReceiptContents: PostReceiptRowType[]
 }
 
 type ActionType =
@@ -43,10 +41,6 @@ type ActionType =
   | {
       type: 'INIT_ORDER'
       orders: OrderType[]
-    }
-  | {
-      type: 'INIT_POST_RECEIPT_CONTENTS'
-      contents: PostReceiptRowType[]
     }
 
 const STORAGE_KEY = 'smartstore-data'
@@ -95,14 +89,6 @@ const reducer = (data: DataType, action: ActionType) => {
         customers: getCustomers(orderData).sort((a, b) =>
           a.key < b.key ? -1 : 1,
         ),
-      }
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(result))
-      return result
-    }
-    case 'INIT_POST_RECEIPT_CONTENTS': {
-      const result = {
-        ...data,
-        postReceiptContents: action.contents,
       }
       localStorage.setItem(STORAGE_KEY, JSON.stringify(result))
       return result

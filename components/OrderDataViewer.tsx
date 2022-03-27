@@ -4,6 +4,7 @@ import TotalSummary from 'components/TotalSummary'
 import CustomerSummary from 'components/CustomerSummary'
 import CustomerSummaryProvider from 'components/CustomerSummaryProvider'
 import PostManager from 'components/PostManager'
+import PostReceipt from './PostReceipt'
 
 const OrderDataViewer: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const OrderDataViewer: React.FC = () => {
           <Tab>전체 통계</Tab>
           <Tab>구매자별 요약</Tab>
           <Tab>준등기</Tab>
+          <Tab>발송처리</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -25,6 +27,9 @@ const OrderDataViewer: React.FC = () => {
           </TabPanel>
           <TabPanel>
             <PostManager />
+          </TabPanel>
+          <TabPanel>
+            <PostReceipt />
           </TabPanel>
         </TabPanels>
       </Tabs>
