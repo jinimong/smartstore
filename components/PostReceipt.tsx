@@ -78,12 +78,11 @@ const PostReceipt: React.FC = () => {
           '택배,등기,소포',
           '우편등기',
           postKey,
-          name,
         ]) || []
       )
     })
     const excelData = XLSX.utils.aoa_to_sheet([
-      ['상품주문번호', '배송방법', '택배사', '송장번호', '수취인명'],
+      ['상품주문번호', '배송방법', '택배사', '송장번호'],
       ...rows,
     ])
     XLSX.utils.book_append_sheet(wb, excelData, '발송처리')
