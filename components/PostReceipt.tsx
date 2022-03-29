@@ -18,9 +18,16 @@ import {
 } from '@chakra-ui/react'
 import XLSX from 'xlsx'
 import { useData } from './DataProvider'
+import { CustomerType } from 'utils/orders'
 
 const placeholder =
   'https://m.epost.go.kr//ems/mobile.RetrieveMobileRecepitList.parcel?r='
+
+const getNewZipCode = async (address: string) => {
+  const response = await fetch(`/api/zipcode?address=${address}`)
+  const data = await response.json()
+  return data.newZipCode
+}
 
 const PostReceipt: React.FC = () => {
   const {
@@ -62,16 +69,33 @@ const PostReceipt: React.FC = () => {
     [toast, setContents],
   )
 
-  const downloadExcel = useCallback(() => {
+  const downloadExcel = useCallback(async () => {
     const wb = XLSX.utils.book_new()
+    const postUsers = [...customers.filter(({ parcel }) => parcel === 0)]
+    postUsers.forEach(async (user) => {
+      if (user.zipCode.length > 5) {
+        user.zipCode = await getNewZipCode(`${user.address1} ${user.address2}`)
+      }
+    })
+
+    const postUsersMap: Record<string, CustomerType> = postUsers.reduce(
+      async (acc, user) => {
+        const zipCode =
+          user.zipCode.length > 5
+            ? await getNewZipCode(`${user.address1} ${user.address2}`)
+            : user.zipCode
+        return {
+          ...acc,
+          [`${user.targetUser}#${zipCode}`]: user,
+        }
+      },
+      {},
+    )
+
     const rows = contents.flatMap(({ postKey, zipCode, name }) => {
       // 준등기, 이름, 우편번호가 같은 유저로 채택
-      const targetUser = customers.find(
-        (user) =>
-          user.parcel === 0 &&
-          user.targetUser === name &&
-          user.zipCode === zipCode,
-      )
+      const key = `${name}#${zipCode}`
+      const targetUser = postUsersMap[key]
       return (
         targetUser?.orderProducts.map(({ orderCode }) => [
           orderCode,
