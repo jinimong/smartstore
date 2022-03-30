@@ -1,5 +1,15 @@
-import { Box, Img, Table, Thead, Tr, Th, Tbody, Td } from '@chakra-ui/react'
-import React from 'react'
+import {
+  Box,
+  Img,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td,
+  Select,
+} from '@chakra-ui/react'
+import React, { useState } from 'react'
 import { getOrderProductInfo, OrderProductType } from 'utils/orders'
 import { useData } from 'components/DataProvider'
 
@@ -12,6 +22,7 @@ const ProductTable: React.FC<Props> = ({ orderProducts }) => {
   const {
     data: { productData },
   } = useData()
+  const [orderType, setOrderType] = useState('date')
   const sum = Object.values(orderProductInfo).reduce(
     (acc, { count, discount, price }) => ({
       count: acc.count + count,
@@ -28,7 +39,18 @@ const ProductTable: React.FC<Props> = ({ orderProducts }) => {
     <Table size="sm">
       <Thead>
         <Tr>
-          <Th></Th>
+          <Th>
+            <Select
+              value={orderType}
+              size="xs"
+              onChange={(e) => {
+                setOrderType(e.target.value)
+              }}
+            >
+              <option value="count">판매량 순</option>
+              <option value="date">신상품 순</option>
+            </Select>
+          </Th>
           <Th>상품</Th>
           <Th isNumeric>판매량</Th>
           <Th isNumeric>매출액</Th>
@@ -43,8 +65,24 @@ const ProductTable: React.FC<Props> = ({ orderProducts }) => {
           <Td isNumeric>{sum.price}</Td>
           <Td isNumeric>{sum.discount}</Td>
         </Tr>
-        {Object.entries(orderProductInfo).map(
-          ([name, { productCode, count, price, discount }]) => (
+        {Object.entries(orderProductInfo)
+          .sort((a, b) => {
+            switch (orderType) {
+              case 'count': {
+                return b[1].count - a[1].count
+              }
+              case 'date': {
+                return (
+                  productData[b[1].productCode]['최종수정일'] -
+                  productData[a[1].productCode]['최종수정일']
+                )
+              }
+              default: {
+                return 0
+              }
+            }
+          })
+          .map(([name, { productCode, count, price, discount }]) => (
             <Tr key={name}>
               <Td>
                 <Box w={50} h={50} bg="green.100">
@@ -69,7 +107,7 @@ const ProductTable: React.FC<Props> = ({ orderProducts }) => {
                 isNumeric
                 {...(count > 1
                   ? {
-                      color: 'green.400',
+                      color: 'red.400',
                       fontWeight: 'bold',
                     }
                   : {})}
@@ -79,8 +117,7 @@ const ProductTable: React.FC<Props> = ({ orderProducts }) => {
               <Td isNumeric>{price}</Td>
               <Td isNumeric>{discount}</Td>
             </Tr>
-          ),
-        )}
+          ))}
       </Tbody>
     </Table>
   )
