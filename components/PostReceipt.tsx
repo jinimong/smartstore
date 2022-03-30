@@ -79,14 +79,11 @@ const PostReceipt: React.FC = () => {
     })
 
     const postUsersMap: Record<string, CustomerType> = postUsers.reduce(
-      async (acc, user) => {
-        const zipCode =
-          user.zipCode.length > 5
-            ? await getNewZipCode(`${user.address1} ${user.address2}`)
-            : user.zipCode
+      (acc, user) => {
+        const { targetUser, zipCode } = user
         return {
           ...acc,
-          [`${user.targetUser}#${zipCode}`]: user,
+          [`${targetUser}#${zipCode}`]: user,
         }
       },
       {},
