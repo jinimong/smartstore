@@ -16,7 +16,7 @@ const Customer: React.FC<Props> = ({ customer, order }) => {
   const isFcfsBasis = order <= fcfsBasisCount
   return (
     <Box mt={4} p={8} borderRadius="xl" boxShadow="xl" fontSize="lg">
-      <CustomerInfo {...customer} />
+      <CustomerInfo customer={customer} />
       <Box mx={4} d="flex" justifyContent="flex-end" sx={{ gap: 4 }}>
         {parcel > 0 ? (
           <Tooltip hasArrow label={`${parcel}원`} bg="gray.300" color="black">
