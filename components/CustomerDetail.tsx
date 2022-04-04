@@ -1,49 +1,22 @@
-import { Badge, Box, List, ListIcon, ListItem } from '@chakra-ui/layout'
+import { Badge, Box } from '@chakra-ui/layout'
 import React from 'react'
 import { CustomerType } from 'utils/orders'
 import ProductTable from 'components/ProductTable'
-import { AtSignIcon, PhoneIcon, StarIcon } from '@chakra-ui/icons'
 import { Tooltip } from '@chakra-ui/react'
 import { useCustomerSummary } from './CustomerSummaryProvider'
+import CustomerInfo from './CustomerInfo'
 
 type Props = { customer: CustomerType; order: number }
 
-const Customer: React.FC<Props> = ({
-  customer: {
-    payUser,
-    targetUser,
-    phone,
-    address1,
-    address2,
-    parcel,
-    isFirstOrder,
-    shouldPayPost,
-    orderProducts,
-  },
-  order,
-}) => {
+const Customer: React.FC<Props> = ({ customer, order }) => {
+  const { parcel, isFirstOrder, shouldPayPost, orderProducts } = customer
   const {
     state: { fcfsBasisCount },
   } = useCustomerSummary()
   const isFcfsBasis = order <= fcfsBasisCount
   return (
     <Box mt={4} p={8} borderRadius="xl" boxShadow="xl" fontSize="lg">
-      <List mx={4} spacing={3}>
-        <ListItem>
-          <ListIcon as={StarIcon} color="green.400" />
-          {payUser}
-          {payUser !== targetUser && ` (수취인:${targetUser})`}
-        </ListItem>
-        <ListItem>
-          <ListIcon as={AtSignIcon} color="green.400" />
-          {`${address1} ${address2}`}
-        </ListItem>
-        <ListItem>
-          <ListIcon as={PhoneIcon} color="green.400" />
-          {phone}
-        </ListItem>
-      </List>
-
+      <CustomerInfo {...customer} />
       <Box mx={4} d="flex" justifyContent="flex-end" sx={{ gap: 4 }}>
         {parcel > 0 ? (
           <Tooltip hasArrow label={`${parcel}원`} bg="gray.300" color="black">
