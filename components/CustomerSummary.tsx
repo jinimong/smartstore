@@ -1,11 +1,26 @@
 import React, { useCallback, useState } from 'react'
-import { Box, ButtonGroup, Input, Spacer, Stack } from '@chakra-ui/react'
+import {
+  Box,
+  ButtonGroup,
+  CloseButton,
+  Input,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverTrigger,
+  Spacer,
+  Stack,
+  Text,
+} from '@chakra-ui/react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import Customer from 'components/CustomerDetail'
 import { useData } from 'components/DataProvider'
 import KeyboardButton from 'components/KeyboardButton'
 import CustomerMenu from 'components/CustomerMenu'
 import CustomerInfo, { getCustomerTextInfo } from './CustomerInfo'
+import ProductTable from './ProductTable'
 
 const CustomerSummary: React.FC = () => {
   const {
@@ -25,34 +40,39 @@ const CustomerSummary: React.FC = () => {
     <div>
       <Box
         w="100%"
-        gridGap={6}
+        gridGap={4}
         display="flex"
-        justifyContent="flex-end"
+        justifyContent="space-between"
         alignItems="center"
       >
-        <Input
-          w={300}
-          placeholder="이름 / 주소 / 연락처 검색"
-          textAlign="center"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-        />
-        <CustomerMenu />
-        <Box textAlign="center">
-          {step} / {size}
+        <Box display="flex" gridGap={4} alignItems="center">
+          <CustomerMenu />
+          <Input
+            w={300}
+            placeholder="이름 / 주소 / 연락처 검색"
+            textAlign="center"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+          />
+          {q.length > 0 && <CloseButton onClick={() => setQ('')} />}
         </Box>
-        <ButtonGroup>
-          <KeyboardButton
-            callback={goPrev}
-            code="ArrowLeft"
-            Icon={ChevronLeftIcon}
-          />
-          <KeyboardButton
-            callback={goNext}
-            code="ArrowRight"
-            Icon={ChevronRightIcon}
-          />
-        </ButtonGroup>
+        {q.length === 0 && (
+          <ButtonGroup alignItems="center">
+            <Box mr={4}>
+              {step} / {size}
+            </Box>
+            <KeyboardButton
+              callback={goPrev}
+              code="ArrowLeft"
+              Icon={ChevronLeftIcon}
+            />
+            <KeyboardButton
+              callback={goNext}
+              code="ArrowRight"
+              Icon={ChevronRightIcon}
+            />
+          </ButtonGroup>
+        )}
       </Box>
       <Spacer />
       {q.length > 0 ? (
@@ -66,16 +86,29 @@ const CustomerSummary: React.FC = () => {
             }))
             .filter(({ text }) => text.includes(q))
             .map(({ customer }) => (
-              <Box
-                key={customer.key}
-                mt={4}
-                p={8}
-                borderRadius="xl"
-                boxShadow="xl"
-                fontSize="lg"
-              >
-                <CustomerInfo customer={customer} q={q} />
-              </Box>
+              <Popover key={customer.key}>
+                <PopoverTrigger>
+                  <Box
+                    mt={4}
+                    p={8}
+                    borderRadius="xl"
+                    boxShadow="xl"
+                    fontSize="lg"
+                  >
+                    <CustomerInfo customer={customer} q={q} />
+                  </Box>
+                </PopoverTrigger>
+                <PopoverContent w="100%" h="80vh" overflowY="auto">
+                  <PopoverArrow />
+                  <PopoverCloseButton />
+                  <Text textAlign="center" mt={4}>
+                    {customer.payUser}
+                  </Text>
+                  <PopoverBody p={12}>
+                    <ProductTable orderProducts={customer.orderProducts} />
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
             ))}
         </Stack>
       ) : (
