@@ -34,6 +34,7 @@ export type OrderType = {
   ['정산예정금액']: number
   ['주문일시']: number
   ['배송속성']: string
+  ['배송지']: string
   ['(기본주소)']: string
   ['(상세주소)']: string
 }
@@ -57,6 +58,7 @@ export type CustomerType = {
   parcel: number
   shouldPayPost: boolean
   isFirstOrder: boolean
+  address: string
   address1: string
   address2: string
   zipCode: string
@@ -80,6 +82,7 @@ export const getCustomers: (orderData: MappedOrderType) => CustomerType[] = (
   return Object.values(orderData).map((orders) => ({
     key: orders[0]['주문번호'],
     payUser: orders[0]['구매자명'],
+    address: orders[0]['배송지'],
     address1: orders[0]['(기본주소)'],
     address2: orders[0]['(상세주소)'],
     zipCode: orders[0]['우편번호'],

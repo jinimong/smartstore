@@ -3,11 +3,11 @@ import { List, ListItem, ListIcon } from '@chakra-ui/react'
 import { CustomerType } from 'utils/orders'
 
 export const getCustomerTextInfo = (customer: CustomerType) => {
-  const { payUser, targetUser, phone, address1, address2 } = customer
+  const { payUser, targetUser, phone, address } = customer
   return {
     name:
       payUser === targetUser ? payUser : `${payUser} (수취인:${targetUser})`,
-    address: `${address1} ${address2}`,
+    address,
     phone,
   }
 }
