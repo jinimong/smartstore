@@ -19,6 +19,7 @@ import {
 import { DownloadIcon } from '@chakra-ui/icons'
 import { useData } from './DataProvider'
 import { getPostData, headers, downloadPostExcelFile } from 'utils/posts'
+import CopyClipboardText from './CopyClipboardText'
 
 const PostManager: React.FC = () => {
   const [value, setValue] = useState<number>(0)
@@ -79,12 +80,20 @@ const PostManager: React.FC = () => {
               color="gray.400"
               fontWeight="bold"
             >
-              <Td isTruncated>{targetUser}</Td>
-              <Td isTruncated>{zipCode}</Td>
-              <Td isTruncated>{address}</Td>
+              <Td isTruncated>
+                <CopyClipboardText>{targetUser}</CopyClipboardText>
+              </Td>
+              <Td isTruncated>
+                <CopyClipboardText>{zipCode}</CopyClipboardText>
+              </Td>
+              <Td isTruncated>
+                <CopyClipboardText>{address}</CopyClipboardText>
+              </Td>
               {/* <Td isTruncated>{address1}</Td>
                 <Td isTruncated>{address2}</Td> */}
-              <Td isTruncated>{targetPhone}</Td>
+              <Td isTruncated>
+                <CopyClipboardText>{targetPhone}</CopyClipboardText>
+              </Td>
             </Tr>
           ))}
         </Tbody>
