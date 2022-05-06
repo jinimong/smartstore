@@ -4,17 +4,17 @@ import { CustomerType } from 'utils/orders'
 export const headers = [
   '받는 분',
   '우편번호',
-  '주소(시도+시군구+도로명+건물번호)',
-  '상세주소(동, 호수, 洞명칭, 아파트, 건물명 등)',
+  // '주소(시도+시군구+도로명+건물번호)',
+  // '상세주소(동, 호수, 洞명칭, 아파트, 건물명 등)',
+  '주소',
   '휴대전화(010-1234-5678)',
 ]
 
 export const getPostData = (custormers: CustomerType[]) =>
-  custormers.map(({ targetUser, zipCode, address1, address2, targetPhone }) => [
+  custormers.map(({ targetUser, zipCode, address, targetPhone }) => [
     targetUser,
     zipCode,
-    address1,
-    address2,
+    address,
     targetPhone,
   ])
 

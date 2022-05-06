@@ -73,21 +73,20 @@ const PostManager: React.FC = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {rows.map(
-            ([targetUser, zipCode, address1, address2, targetPhone]) => (
-              <Tr
-                key={targetUser + targetPhone}
-                color="gray.400"
-                fontWeight="bold"
-              >
-                <Td isTruncated>{targetUser}</Td>
-                <Td isTruncated>{zipCode}</Td>
-                <Td isTruncated>{address1}</Td>
-                <Td isTruncated>{address2}</Td>
-                <Td isTruncated>{targetPhone}</Td>
-              </Tr>
-            ),
-          )}
+          {rows.map(([targetUser, zipCode, address, targetPhone]) => (
+            <Tr
+              key={targetUser + targetPhone}
+              color="gray.400"
+              fontWeight="bold"
+            >
+              <Td isTruncated>{targetUser}</Td>
+              <Td isTruncated>{zipCode}</Td>
+              <Td isTruncated>{address}</Td>
+              {/* <Td isTruncated>{address1}</Td>
+                <Td isTruncated>{address2}</Td> */}
+              <Td isTruncated>{targetPhone}</Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </Box>
